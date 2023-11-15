@@ -1,10 +1,11 @@
-import { Box, Typography } from '@mui/material'
-import SkillButton from '../../atoms/SkillButton'
-import { imageName } from '../../../Constants/ConstantName'
+import { Box, Typography } from "@mui/material";
+import { FC } from "react";
+import SkillButton from "../../atoms/SkillButton";
+import { socialMediaName } from "../../../Constants/ConstantName";
 
-const SkillsCard = () => {
-  return (
-    <Box
+ 
+const SocialCard: FC = () => {
+    return (  <Box
       sx={{
         marginTop: '0.5em',
         // minHeight: '15em',
@@ -35,7 +36,7 @@ const SkillsCard = () => {
       >
         <Box sx={{ width: '95%' }}>
           <Typography variant="subtitle1">
-            Things that i talk about.........
+            Connet with me on
           </Typography>
         </Box>
         <Box
@@ -43,17 +44,17 @@ const SkillsCard = () => {
             minHeight: '15em',
             minWidth: '95%',
             display: 'flex',
-            flexWrap: 'wrap',
+            flexDirection:'column',
             justifyContent: 'space-evenly',
+            alignItems:'center'
           }}
         >
-          {imageName.map((imgName) => (
-            <SkillButton name={imgName} />
+          {socialMediaName.map((socialMediaName) => (
+            <SkillButton name={socialMediaName} />
           ))}
         </Box>
       </Box>
-    </Box>
-  )
+    </Box> );
 }
-
-export default SkillsCard
+ 
+export default SocialCard;

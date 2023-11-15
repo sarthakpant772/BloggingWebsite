@@ -10,7 +10,7 @@ const SkillButton: FC<SkillProps> = (props) => {
   return (
     <Box
       sx={{
-        width: '7em',
+        minWidth: '7em',
         height: '3em',
         display: 'flex',
         justifyContent: 'center',
@@ -19,6 +19,7 @@ const SkillButton: FC<SkillProps> = (props) => {
     >
       <button
         style={{
+          width:'100%',
           height: '90%',
           display: 'flex',
           background: 'none',
@@ -28,6 +29,7 @@ const SkillButton: FC<SkillProps> = (props) => {
             'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px',
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent:'center'
         }}
       >
         <Box
