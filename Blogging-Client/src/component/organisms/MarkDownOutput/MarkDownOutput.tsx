@@ -1,31 +1,44 @@
-import { Box, Hidden } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { FC } from "react";
 import SkillButton from "../../atoms/SkillButton";
-
 import rehypeRaw from "rehype-raw";
 import ReactMarkdown from "react-markdown";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
+import rangeParser from "parse-numeric-range"; // Import rangeParser
 
 const syntaxTheme = oneDark;
 
-const MarkdownComponents: object = {
-  code({ node, inline, className, ...props }) {
+interface MetadataProps {
+  meta?: string;
+}
+
+interface MarkdownComponentsProps {
+  node?: {
+    data?: MetadataProps;
+  };
+  className: string;
+  children: string;
+}
+
+const MarkdownComponents: Record<string, React.FC<MarkdownComponentsProps>> = {
+  code({ node, className, ...props }) {
     const hasLang = /language-(\w+)/.exec(className || "");
     const hasMeta = node?.data?.meta;
 
     const applyHighlights: object = (applyHighlights: number) => {
       if (hasMeta) {
         const RE = /{([\d,-]+)}/;
-        const metadata = node.data.meta?.replace(/\s/g, "");
-        const strlineNumbers = RE?.test(metadata) ? RE?.exec(metadata)[1] : "0";
+        const metadata = node.data?.meta?.replace(/\s/g, "") || "";
+        const match = RE?.exec(metadata);
+        const strlineNumbers = match ? match[1] : "0";
         const highlightLines = rangeParser(strlineNumbers);
         const highlight = highlightLines;
         const data: string = highlight.includes(applyHighlights)
           ? "highlight"
-          : null;
+          : "";
         return { data };
       } else {
         return {};
@@ -39,7 +52,7 @@ const MarkdownComponents: object = {
         PreTag="div"
         className="codeStyle"
         showLineNumbers={true}
-        wrapLines={hasMeta}
+        wrapLines={Boolean(hasMeta)} // Convert hasMeta to boolean
         useInlineStyles={true}
         lineProps={applyHighlights}
       >

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { edit } from "../../../features/Editor/EditorSlice";
 

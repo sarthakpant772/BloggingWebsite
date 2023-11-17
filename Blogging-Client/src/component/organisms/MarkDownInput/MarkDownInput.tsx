@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { FC } from "react";
+import  { FC } from "react";
 import SkillButton from "../../atoms/SkillButton";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
