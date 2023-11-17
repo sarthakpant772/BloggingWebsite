@@ -3,10 +3,14 @@ import React, { FC } from "react";
 import SkillButton from "../../atoms/SkillButton";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
+import { useDispatch } from "react-redux";
+import { modalState } from "../../../features/Editor/EditorSlice";
 
 const MarkDownInput: FC = () => {
+  const dispatch = useDispatch();
   const handleSubmit = () => {
     console.log("submitted");
+    dispatch(modalState());
   };
   return (
     <Box
@@ -30,7 +34,7 @@ const MarkDownInput: FC = () => {
       </Box>
 
       <Box sx={{ marginTop: "1em", width: "95%", height: "90%" }}>
-        <Input  />
+        <Input />
       </Box>
       <Box
         sx={{

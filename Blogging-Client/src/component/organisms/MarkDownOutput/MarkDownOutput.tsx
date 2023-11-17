@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Hidden } from "@mui/material";
 import React, { FC } from "react";
 import SkillButton from "../../atoms/SkillButton";
 
@@ -74,7 +74,18 @@ const MarkDownOutput: FC = () => {
         <SkillButton name="YourOutput" />
       </Box>
 
-      <Box sx={{ width: "90%" }}>
+      <Box
+        sx={{
+          width: "90%",
+          height: "90%",
+          overflowY: "scroll",
+          WebkitOverflowScrolling: "touch",
+          WebkitScrollSnapType: "hidden",
+          "&::-webkit-scrollbar": {
+            display: "none", // Hide the scrollbar in WebKit browsers
+          },
+        }}
+      >
         <ReactMarkdown
           components={MarkdownComponents}
           rehypePlugins={[rehypeRaw]}
