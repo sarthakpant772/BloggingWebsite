@@ -7,7 +7,7 @@ import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 // TODO add transion in mobile view rest is all good :)
 const NavBar: React.FC = () => {
   const [dropDown, setDropDown] = useState(false);
-  const navHeadding: string[] = ["All Blog", "Latest Blog", "Contact Me"];
+  const navHeadding: string[] = ["All Blog", "Blog Editor"];
 
   return (
     <Box sx={{ width: "100%" }}>

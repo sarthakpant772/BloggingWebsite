@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
 interface CardsDetails {
   _id: string;
@@ -12,10 +13,25 @@ interface CardsDetails {
 const Card = (props: CardsDetails) => {
   const navigate = useNavigate();
 
+  const convertDateToAgo = (createdAt: string) => {
+    try {
+      const date = new Date(createdAt);
+
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      console.error("Error converting date:", error);
+      return "Invalid date";
+    }
+  };
+
   // TODO add navigation to new page
   const handleClick = () => {
     console.log(props);
-
     navigate(`/${props._id}`);
   };
 
@@ -48,7 +64,9 @@ const Card = (props: CardsDetails) => {
         }}
       >
         <Box sx={{ width: "90%", minHeight: "2em", display: "flex" }}>
-          <Typography variant="subtitle1">{props.createdAt}</Typography>
+          <Typography variant="subtitle1">
+            {convertDateToAgo(props.createdAt)}
+          </Typography>
         </Box>
         <Box sx={{ width: "90%", minHeight: "4em", display: "flex" }}>
           <Typography variant="h4">{props.title}</Typography>

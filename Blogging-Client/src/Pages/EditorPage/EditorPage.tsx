@@ -1,35 +1,60 @@
 import { Box, Modal, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import MarkDownInput from "../../component/organisms/MarkDownInput/MarkDownInput";
 import MarkDownOutput from "../../component/organisms/MarkDownOutput/MarkDownOutput";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { modalState } from "../../features/Editor/EditorSlice";
+import { edit, modalState } from "../../features/Editor/EditorSlice";
 import { Font } from "../../Constants/Fonts";
 import Button from "../../component/atoms/Button";
-import FireBase from "../../Firebase/FirebaseSDK";
-import { v4 as uuid } from "uuid/";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 interface IBlogData {
+  pin: string;
   title: string;
   content: string;
   description: string;
 }
 
 const EditorPage: FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const open = useSelector((state: RootState) => state.editor.open);
-  const content = useSelector((state: RootState) => state.editor.text);
+  const markdownText = useSelector((state: RootState) => state.editor.text);
 
   const [blogData, setBlogData] = useState<IBlogData>({
     title: "",
     content: "",
     description: "",
+    pin: "",
   });
-  const [pin, setPIN] = useState("");
-  const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    setBlogData({ ...blogData, content: markdownText });
+  }, [markdownText]);
+
+  const handleSubmit = async () => {
     dispatch(modalState());
-    setBlogData({ ...blogData, content: content });
+
+    const pin = import.meta.env.VITE_PIN;
+    if (blogData.pin !== pin) {
+      alert("pin not correct");
+      setBlogData({ title: "", content: "", description: "", pin: "" });
+    } else {
+      try {
+        await axios.post("http://localhost:5000/blog/postBlog", {
+          ...blogData,
+        });
+        alert("Blog Posted");
+        setBlogData({ title: "", content: "", description: "", pin: "" });
+        dispatch(edit(blogData.content));
+        navigate("/");
+      } catch (err) {
+        alert("error while posting");
+        console.error(err);
+      }
+    }
   };
 
   return (
@@ -101,7 +126,7 @@ const EditorPage: FC = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "50%",
-            height: "30%",
+            height: "40%",
             borderRadius: "10px",
             backgroundColor: "common.white",
             borderTopWidth: "2px", // Different border widths for each side
@@ -157,9 +182,9 @@ const EditorPage: FC = () => {
                 fontFamily: Font.REGULAR,
                 fontSize: "1rem",
               }}
-              value={blogData.title}
+              value={blogData.pin}
               onChange={(e) => {
-                setPIN(e.target.value);
+                setBlogData({ ...blogData, pin: e.target.value });
               }}
             />
           </Box>

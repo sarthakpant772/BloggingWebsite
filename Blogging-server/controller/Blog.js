@@ -31,7 +31,6 @@ const postPost = async (req, res) => {
     const responce = await data.save();
     res.status(200).json(responce);
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 };

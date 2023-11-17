@@ -11,11 +11,11 @@ import ShowSingleBlog from "./component/organisms/ShowSingleBlog/ShowSingleBlog"
 const App: FC = () => {
   return (
     <Box>
-      <NavBar />
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path="/" element={<HomePage />}>
-            <Route path="/" element={<ShowAllBlog />} />
+            <Route index path="/" element={<ShowAllBlog />} />
             <Route path="/:id" element={<ShowSingleBlog />} />
           </Route>
           <Route path="/editor" element={<EditorPage />} />
