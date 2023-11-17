@@ -43,9 +43,12 @@ const EditorPage: FC = () => {
       setBlogData({ title: "", content: "", description: "", pin: "" });
     } else {
       try {
-        await axios.post("http://localhost:5000/blog/postBlog", {
-          ...blogData,
-        });
+        await axios.post(
+          "https://blogging-website-wine.vercel.app/blog/postBlog",
+          {
+            ...blogData,
+          }
+        );
         alert("Blog Posted");
         setBlogData({ title: "", content: "", description: "", pin: "" });
         dispatch(edit(blogData.content));

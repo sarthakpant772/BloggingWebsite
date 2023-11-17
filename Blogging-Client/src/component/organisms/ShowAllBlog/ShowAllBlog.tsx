@@ -22,7 +22,9 @@ const ShowAllBlog = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/blog/allBlogs");
+      const res = await axios.get(
+        "https://blogging-website-wine.vercel.app/blog/allBlogs"
+      );
       // console.log({ ...res.data });
       setDataset(res.data);
       console.log(dataset);
