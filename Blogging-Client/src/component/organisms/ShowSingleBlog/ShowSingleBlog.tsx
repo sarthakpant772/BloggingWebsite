@@ -4,9 +4,10 @@ import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
+import gfm from "remark-gfm"; // Import remark-gfm
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import rangeParser from "parse-numeric-range"; // Import rangeParser
+import rangeParser from "parse-numeric-range";
 
 const syntaxTheme = oneDark;
 
@@ -54,6 +55,7 @@ const MarkdownComponents: Record<string, React.FC<MarkdownComponentsProps>> = {
         wrapLines={Boolean(hasMeta)} // Convert hasMeta to boolean
         useInlineStyles={true}
         lineProps={applyHighlights}
+        codeTagProps={{ style: { backgroundColor: "#f4f4f4", padding: "8px" } }} // Add background color and padding
       >
         {props.children}
       </SyntaxHighlighter>
@@ -111,13 +113,14 @@ const ShowSingleBlog: FC = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        overflowY: "scroll",
       }}
     >
       <Box sx={{ width: "90%", height: "100%" }}>
         <Typography variant="h4">{dataset.title}</Typography>
         <ReactMarkdown
           components={MarkdownComponents}
-          rehypePlugins={[rehypeRaw]}
+          rehypePlugins={[rehypeRaw, gfm]} // Include gfm here
         >
           {dataset.content}
         </ReactMarkdown>
