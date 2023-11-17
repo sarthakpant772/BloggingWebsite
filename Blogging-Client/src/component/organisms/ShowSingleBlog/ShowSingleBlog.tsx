@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import { FC } from "react";
+import { Box, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
@@ -18,6 +18,8 @@ SyntaxHighlighter.registerLanguage("json", json);
 import rangeParser from "parse-numeric-range";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const syntaxTheme = oneDark;
 
@@ -61,40 +63,36 @@ const MarkdownComponents: object = {
   },
 };
 
+interface IDataset {
+  title: string;
+  content: string;
+}
+
 const ShowSingleBlog: FC = () => {
-  const markdown = `
-## DSC_ML
+  const [dataset, setDataset] = useState<IDataset>({});
 
-> 👩🏻‍💻  This repository is a task given by  . And this repository is created by  [Sarthak Pant](https://github.com/sarthakpant772)
+  const { id } = useParams();
 
-![scikit_learn](https://img.shields.io/badge/scikit_learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=darkgreen)
-![Pandas](https://img.shields.io/badge/Pandas-2C2D72?style=for-the-badge&logo=pandas&logoColor=whit)
+  const getData = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/blog/getBlogById/${id}`
+      );
+      console.log(res.data);
+      setDataset(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-### Setup & Installation
-
-### To Contribute
-
-- Please [create a pull request](https://github.com/sarthakpant772/DSC_ML/pulls) so the main code is still up and running
-
-- For more features or in case of any bugs, [raise an issue](https://github.com/sarthakpant772/DSC_ML/issues).
-
-## About the dataset
-<img src="https://thesaudiexpat.com/wp-content/uploads/2018/10/annual-leave1.png" width=90%  />
-
- - This dataset gives us information about whether a person leaves his or her job based on some parameters.
- - [Download the dataset](https://www.kaggle.com/manasdalakoti/univai-hack-data)
-
-## Reach out
-
-[@sarthakpant:](https://github.com/sarthakpant772)
-[![Twitter](https://user-images.githubusercontent.com/26264600/88994487-151cad00-d31b-11ea-8795-da01dd1f29d7.png)](https://twitter.com/1SarthakPant)
-[![LinkedIn](https://user-images.githubusercontent.com/26264600/88994287-99226500-d31a-11ea-9a80-a91afd654777.png)](https://www.linkedin.com/in/sarthak-pant-8844521b7/)
-`;
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Box
       sx={{
+        height: "100%",
         width: "95%",
         display: "flex",
         borderRadius: "10px",
@@ -111,12 +109,13 @@ const ShowSingleBlog: FC = () => {
         alignItems: "center",
       }}
     >
-      <Box sx={{ width: "90%" }}>
+      <Box sx={{ width: "90%", height: "100%" }}>
+        <Typography variant="h4">{dataset.title}</Typography>
         <ReactMarkdown
           components={MarkdownComponents}
           rehypePlugins={[rehypeRaw]}
         >
-          {markdown}
+          {dataset.content}
         </ReactMarkdown>
       </Box>
     </Box>
