@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import logo from "../../../assets/myLOGO.png";
 import NavButton from "../../atoms/NavButton";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
+import { Link } from "react-router-dom";
 
 // TODO add transion in mobile view rest is all good :)
 const NavBar: React.FC = () => {
@@ -25,7 +26,7 @@ const NavBar: React.FC = () => {
         {/* Image */}
         {/* TODO Add navigation */}
         <Box sx={{ height: "90%" }}>
-          <Button sx={{ height: "100%" }}>
+          <Button sx={{ height: "100%" }} component={Link} to="/">
             <Box component="img" src={logo} sx={{ height: "inherit" }} />
           </Button>
         </Box>

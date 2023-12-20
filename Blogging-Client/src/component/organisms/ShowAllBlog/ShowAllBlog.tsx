@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import Card from "../../molecules/Card";
 import axios from "axios";
@@ -11,6 +11,7 @@ interface IDataset {
 }
 
 const ShowAllBlog = () => {
+  const [loding, setLoading] = useState<boolean>(true);
   const [dataset, setDataset] = useState<IDataset[]>([
     {
       _id: "",
@@ -27,7 +28,8 @@ const ShowAllBlog = () => {
       );
       // console.log({ ...res.data });
       setDataset(res.data);
-      console.log(dataset);
+      // console.log(dataset);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -47,9 +49,36 @@ const ShowAllBlog = () => {
         alignItems: "center",
       }}
     >
-      {dataset.map((data) => (
-        <Card {...data} />
-      ))}
+      {loding ? (
+        <Skeleton
+          sx={{
+            width: "100%",
+            height: "7em",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "1em",
+          }}
+          animation="wave"
+          variant="rectangular"
+        />
+      ) : (
+        // <Typography>loading...</Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {dataset.map((data) => (
+            <Card {...data} />
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
